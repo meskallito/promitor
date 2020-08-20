@@ -48,8 +48,8 @@ namespace Promitor.Agents.Scraper
             services.AddHealthChecks()
                    .AddResourceDiscoveryHealthCheck(Configuration);
             
-            services.UseMetricSinks(Configuration)
-                .ScheduleMetricScraping();
+            //services.UseMetricSinks(Configuration)
+            //    .ScheduleMetricScraping();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

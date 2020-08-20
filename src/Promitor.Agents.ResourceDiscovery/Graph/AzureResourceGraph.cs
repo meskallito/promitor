@@ -58,6 +58,9 @@ namespace Promitor.Agents.ResourceDiscovery.Graph
                 {
                     var queryRequest = new QueryRequest(Subscriptions, query);
                     var response = await graphClient.ResourcesAsync(queryRequest);
+                    _logger.LogDebug($"Total records: {response.TotalRecords}");
+                    _logger.LogDebug($"Result Truncated: {response.ResultTruncated}");
+                    _logger.LogDebug($"Raw Result: {response.Data}");
                     isSuccessfulDependency = true;
                     return response.Data as JObject;
                 }
