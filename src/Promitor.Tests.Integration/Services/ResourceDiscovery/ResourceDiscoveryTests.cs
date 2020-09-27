@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using Bogus;
 using Newtonsoft.Json;
 using Promitor.Agents.ResourceDiscovery.Graph.Model;
+using Promitor.Core.Contracts;
+using Promitor.Core.Contracts.ResourceTypes;
 using Promitor.Tests.Integration.Clients;
 using Xunit;
 using Xunit.Abstractions;
@@ -51,6 +53,30 @@ namespace Promitor.Tests.Integration.Services.ResourceDiscovery
             var resources = JsonConvert.DeserializeObject<List<Resource>>(rawResponseBody);
             Assert.NotNull(resources);
             Assert.Equal(expectedResourceCount, resources.Count);
+        }
+
+        [Fact]
+        public async Task ResourceDiscovery_GetAllPerResourceType_SerializationWorks()
+        {
+            // Arrange
+            const string resourceDiscoveryGroupName = "logic-apps-unfiltered";
+            var resourceDiscoveryClient = new ResourceDiscoveryClient(Configuration, Logger);
+
+            // Act
+            var response = await resourceDiscoveryClient.GetDiscoveredResourcesAsync(resourceDiscoveryGroupName);
+
+            // Assert
+            Assert.Equal(HttpStatusCode.OK, response.StatusCode);
+            var rawResponseBody = await response.Content.ReadAsStringAsync();
+            Assert.NotEmpty(rawResponseBody);
+            var resources = JsonConvert.DeserializeObject<List<AzureResourceDefinition>>(rawResponseBody);
+            Assert.NotNull(resources);
+            foreach (var resource in resources)
+            {
+                Assert.NotNull(resource);
+                LogicAppResourceDefinition logicApp = resource as LogicAppResourceDefinition;
+                Assert.NotNull(logicApp);
+            }
         }
 
         [Fact]
