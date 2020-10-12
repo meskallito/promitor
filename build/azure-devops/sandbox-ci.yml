@@ -90,7 +90,7 @@ stages:
      - template: templates/build-scraper-image.yml
        parameters:
         imageName: '$(Image.TaggedName)'
-        tags: '--tag promitor-agent-scraper-ci --tag ghcr.io/tomkerkhove/promitor-agent-scraper-ci-sandbox:$(Image.Tag) --tag $(Image.TaggedName.OSAgnostic)'
+        tags: '--tag promitor-agent-scraper-ci --tag ghcr.io/tomkerkhove/promitor-agent-scraper-ci-sandbox:$(Image.Tag) --tag ghcr.io/tomkerkhove/promitor/promitor-agent-scraper-ci-sandbox:$(Image.Tag) --tag $(Image.TaggedName.OSAgnostic)'
         buildArgs: 'VERSION="$(App.Version)"'
         os: '$(OS.Name)'
      
