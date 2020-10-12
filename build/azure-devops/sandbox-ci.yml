@@ -96,11 +96,13 @@ stages:
      
      - task: PowerShell@2
        inputs:
-        targetType: 'inline'
-        errorActionPreference: 'continue'
-        script: |
-         docker login --username $(ContainerRegistry.GitHub.Username) --password $(ContainerRegistry.GitHub.Token)
-         docker push ghcr.io/tomkerkhove/promitor-agent-scraper-ci-sandbox:$(Image.Tag)
+         targetType: 'inline'
+         script: |
+           docker login --username $(ContainerRegistry.GitHub.Username) --password $(ContainerRegistry.GitHub.Token)
+           docker push ghcr.io/tomkerkhove/promitor-agent-scraper-ci-sandbox:$(Image.Tag)
+         errorActionPreference: 'continue'
+         ignoreLASTEXITCODE: true
+         pwsh: true
      - task: PowerShell@2
        inputs:
         targetType: 'inline'
