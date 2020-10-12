@@ -13,6 +13,7 @@ pr:
     - build/azure-devops/agents-ci-scraper.yml
     - charts/promitor-agent-scraper/*
 variables:
+  - group: 'GitHub Container Registry'
   - template: ./variables/build.yml
   - template: ./variables/helm.yml
   - name: Image.Name
@@ -92,5 +93,17 @@ stages:
         tags: '--tag promitor-agent-scraper-ci --tag ghcr.io/tomkerkhove/promitor-agent-scraper-ci-sandbox:$(Image.Tag) --tag $(Image.TaggedName.OSAgnostic)'
         buildArgs: 'VERSION="$(App.Version)"'
         os: '$(OS.Name)'
-     - script : docker login --username $(ContainerRegistry.GitHub.Username) --password $(ContainerRegistry.GitHub.Token)
-     - script : docker push ghcr.io/tomkerkhove/promitor-agent-scraper-ci-sandbox:$(Image.Tag)
+     
+     - task: PowerShell@2
+       inputs:
+        targetType: 'inline'
+        errorActionPreference: 'continue'
+        script: |
+         docker login --username $(ContainerRegistry.GitHub.Username) --password $(ContainerRegistry.GitHub.Token)
+         docker push ghcr.io/tomkerkhove/promitor-agent-scraper-ci-sandbox:$(Image.Tag)
+     - task: PowerShell@2
+       inputs:
+        targetType: 'inline'
+        script: |
+         docker login --username $(ContainerRegistry.GitHub.Username) --password $(ContainerRegistry.GitHub.Token)
+         docker push ghcr.io/tomkerkhove/promitor/promitor-agent-scraper-ci-sandbox:$(Image.Tag)
