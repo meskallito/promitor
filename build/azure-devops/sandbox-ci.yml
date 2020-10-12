@@ -98,12 +98,4 @@ stages:
          script: |
            docker login ghcr.io --username $(ContainerRegistry.GitHub.Username) --password $(ContainerRegistry.GitHub.Token)
            docker push ghcr.io/tomkerkhove/sandbox-container-image-sandbox:$(Image.Tag)
-         errorActionPreference: 'continue'
-         ignoreLASTEXITCODE: true
          pwsh: true
-     - task: PowerShell@2
-       inputs:
-        targetType: 'inline'
-        script: |
-         docker login ghcr.io --username $(ContainerRegistry.GitHub.Username) --password $(ContainerRegistry.GitHub.Token)
-         docker push ghcr.io/tomkerkhove/github-package-registry-sandbox/sandbox-container-image-sandbox:$(Image.Tag)
